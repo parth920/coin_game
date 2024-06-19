@@ -1,0 +1,85 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>coin game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="pyxelCanvas" width="400" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('pyxelCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let score = 0;
+        let urlOpened = false;
+
+        // Example game logic (replace with your Pyxel game logic)
+        function update() {
+            // Handle game updates
+            if (score === 10 && !urlOpened) {
+                // Open URL if score reaches 10 and URL hasn't been opened yet
+                window.open('https://parth920.github.io/tap_game/', '_blank');
+                urlOpened = true;
+            }
+        }
+
+        function draw() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw game elements
+            ctx.fillStyle = 'black';
+            ctx.font = '20px Arial';
+            ctx.fillText(`Score: ${score}`, 10, 30);
+            ctx.fillText(`Rank: ${getRank(score)}`, 10, 60);
+
+            // Example: Draw a coin image
+            const coinImg = new Image();
+            coinImg.src = 'coin.png';  // Replace with your image path
+            coinImg.onload = function() {
+                ctx.drawImage(coinImg, 150, 250, 100, 100);
+            };
+        }
+
+        function getRank(score) {
+            const RANKS = [
+                { name: 'Bronze', threshold: 0 },
+                { name: 'Silver', threshold: 45 },
+                { name: 'Platinum', threshold: 65 },
+                { name: 'Diamond', threshold: 100 }
+            ];
+
+            for (let i = RANKS.length - 1; i >= 0; i--) {
+                if (score >= RANKS[i].threshold) {
+                    return RANKS[i].name;
+                }
+            }
+
+            return 'Bronze';
+        }
+
+        // Example: Simulate game update and draw loop
+        setInterval(function() {
+            update();
+            draw();
+            score++;  // Simulate score increment for testing
+        }, 1000);  // Adjust interval as needed for your game logic
+    </script>
+</body>
+</html>
